@@ -1,6 +1,7 @@
 ---
 #Demo setup by ansible docs: http://answersforaws.com/code/netflixoss/asgard/
-#
+#If using ec2.py default config, must use playbook with: 
+#ansible-playbook -i inventory provision.yml
 - hosts: localhost
   connection: local
   gather_facts: False
