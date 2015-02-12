@@ -1,0 +1,48 @@
+---
+#Demo setup by ansible docs: http://answersforaws.com/code/netflixoss/asgard/
+#
+- hosts: localhost
+  connection: local
+  gather_facts: False
+
+  tasks:
+
+    - name: Provision a set of instances
+      ec2:
+        group: SSH
+        keypair: KeyPair1
+        instance_type: t2.micro
+        region: us-east-1
+        image: ami-146e2a7c
+        wait: true
+        exact_count: 5
+        count_tag:
+            Name: Demo
+        instance_tags:
+            Name: Demo
+      register: ec2
+
+    - name: Add all instance public IPs to host group
+      add_host: hostname={{ item.public_ip }} groupname=ec2hosts
+      with_items: ec2.instances
+
+    - name: Wait for SSH to be available
+      pause: minutes=1
+
+- name: Install AWS CLI
+  user: ec2-user
+  sudo: True
+  hosts: ec2hosts
+  gather_facts: true
+
+  tasks:
+
+    - name: Install Python PIP
+      yum: pkg=python-pip state=latest
+
+    - name: Install boto via PIP
+      pip: name=boto state=latest
+
+    - name: Install AWS CLI
+      pip: name=awscli state=latest
+
