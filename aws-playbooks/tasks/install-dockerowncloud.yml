@@ -1,0 +1,29 @@
+#Odd bug with docker ansible module: 
+#https://github.com/ansible/ansible-modules-core/issues/683
+- name: Install Docker Python Module
+  pip: name=docker-py state=latest
+
+- name: Start FirewallD
+  service: name=firewalld state=started
+
+- name: Enable Firewall Rules
+  firewalld: service=http permanent=true state=enabled 
+
+- name: Install Docker
+  yum: pkg=docker state=latest
+
+- name: Start Docker Service
+  service: name=docker state=started
+
+
+#Need api version for docker mismatch
+- name: Install Dockerized Owncloud
+  docker: 
+    docker_api_version=1.15
+    image=jchaney/owncloud 
+    name=owncloud
+    ports=80:80
+    volumes=/var/www/owncloud:/var/owncloud/
+
+- name: Create www path for Owncloud
+  file: path=/var/www/owncloud owner=centos group=centos state=directory mode=0775
