@@ -23,7 +23,7 @@
     image=jchaney/owncloud 
     name=owncloud
     ports=80:80
-    volumes=/var/www/owncloud:/var/owncloud/
+    volumes=/var/owncloudData:/var/www/owncloud/data
 
 - name: Create www path for Owncloud
-  file: path=/var/www/owncloud owner=centos group=centos state=directory mode=0775
+  file: path=/var/owncloudData owner=centos group=centos state=directory mode=0775
