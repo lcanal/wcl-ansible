@@ -1,0 +1,15 @@
+---
+
+- name: Test that Slash is on
+  hosts: all
+  vars_files: 
+    - /private/vsphere-creds.yml
+
+  tasks:
+    - vsphere_guest:
+        vcenter_hostname: xanatos
+        guest: Slash
+        state: powered_on
+        username: "{{ vsphereName }}"
+        password: "{{ vspherePass }}"
+
