@@ -1,0 +1,11 @@
+---
+- include: esxi-prereqs.yml
+
+##Ensure ESXi Guest is up and running
+- name: Im an ESXi Guest
+  vsphere_guest:
+    guest: "{{ dirserverName1 }}"
+    vcenter_hostname: xanatos
+    username: "{{ esxiuser }}"
+    password: "{{ esxipass }}"
+    state: powered_on
