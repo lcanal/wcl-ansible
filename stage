@@ -1,5 +1,7 @@
 [dirservers]
-april
+#april
+#10.0.0.209
+10.0.0.208
 
 [localhost]
 127.0.0.1

@@ -1,0 +1,10 @@
+---
+- name: Ensure EPEL Repo is available
+  yum: name=epel-release state=latest
+
+- name: Ensure pysphere requirement for vsphere module
+  yum: name=python-pip state=latest
+
+- pip: name=pysphere state=latest
+
+

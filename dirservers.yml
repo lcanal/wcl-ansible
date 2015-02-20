@@ -2,8 +2,9 @@
 ##Directory server; Backed by FreeIPA
 - name: Ensure Directory Server is up and configured
   hosts: dirservers
+  user: root
   vars_files:
     - private/esxi-creds.yml
   roles:
-    - esxiguest
-    #- dirserver
+    #- esxiguest
+    - dirserver
