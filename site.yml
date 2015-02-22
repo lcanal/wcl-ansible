@@ -1,3 +1,4 @@
 ---
 ##Main WestCoastLabs config. vSphere backed
 - include: dirservers.yml
+- include: appservers.yml
