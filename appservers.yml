@@ -1,9 +1,9 @@
 ---
-- name: Application Server common role
+- name: Application Servers Play
   hosts: appservers
   user: root
   vars_files:
     - private/ipaop-creds.yml 
   roles:
     - common
-    #- appserver
+    - appserver
