@@ -1,0 +1,14 @@
+---
+- name: Hostname check
+  hostname: name={{ inventory_hostname }}.westcoastlabs.info
+
+- name: FreeIPA Client Check
+  yum: name=ipa-client state=latest
+
+- name: FreeIPA Config Check
+  command: /usr/sbin/ipa-client-install -d --enable-dns-updates --mkhomedir --unattended --principal ipaop -w "{{ ipaop_pass }}"
+  args:
+    creates: /var/lib/ipa-client
+
+- name: EPEL Repo Check
+  yum: name=epel-release state=latest

@@ -1,0 +1,45 @@
+---
+- name: Upgrade all packages
+  yum: name='*' state=latest
+
+- name: Ensure EPEL Repo is available
+  yum: name=epel-release state=latest
+
+- name: Ensure pysphere requirement for vsphere module
+  yum: name=python-pip state=latest
+
+- pip: name=pysphere state=latest
+
+- name: Ensure IPA Server is installed
+  yum: name=ipa-server state=latest
+
+- name: Ensure IPA Prereqs are there
+  yum: name=bind-dyndb-ldap state=latest
+
+- name: Hostname check
+  hostname: name=caseyjones.westcoastlabs.info
+
+- name: Ensure FirewallD is installed and configured
+  yum: name=firewalld state=latest
+
+- name: Ensure proper host rules are in place
+  firewalld: service=https permanent=true state=enabled 
+
+- firewalld: service=http permanent=true state=enabled 
+
+- firewalld: service=ldap permanent=true state=enabled 
+
+- firewalld: service=ldaps permanent=true state=enabled 
+
+- firewalld: service=kerberos permanent=true state=enabled 
+
+- firewalld: port=53/tcp permanent=true state=enabled 
+
+- firewalld: port=53/udp permanent=true state=enabled 
+
+- firewalld: service=ntp permanent=true state=enabled 
+
+- name: Reload firewalld
+  service: name=firewalld state=restarted
+
+- debug: msg="You can now install ipa-server (Command ipa-server-install)"

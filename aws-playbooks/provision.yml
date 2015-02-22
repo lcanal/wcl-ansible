@@ -16,7 +16,7 @@
         region: us-east-1
         image: ami-96a818fe #CentOS7; #ami-a8d369c0 RHEL7. ami-146e2a7c is AmazonLinuxAMI
         wait: true
-        exact_count: 1
+        exact_count: 2
         count_tag:
             Name: Owncloud
         instance_tags:
