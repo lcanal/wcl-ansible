@@ -8,7 +8,7 @@
 - name: FreeIPA Config Check
   command: /usr/sbin/ipa-client-install -d --enable-dns-updates --mkhomedir --unattended --principal ipaop -w "{{ ipaop_pass }}"
   args:
-    creates: /var/lib/ipa-client
+    creates: /etc/ipa/default.conf
 
 - name: EPEL Repo Check
   yum: name=epel-release state=latest

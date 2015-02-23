@@ -17,6 +17,8 @@
 - name: Start Docker Service
   service: name=docker state=started
 
+- name: Create www path for Owncloud
+  file: path=/var/owncloudData owner=luis group=wclusers state=directory mode=0775
 
 #Need api version for docker mismatch
 - name: Install Dockerized Owncloud
@@ -26,6 +28,3 @@
     name=owncloud
     ports=80:80
     volumes=/var/owncloudData:/var/www/owncloud/data
-
-- name: Create www path for Owncloud
-  file: path=/var/owncloudData owner=luis group=wclusers state=directory mode=0775
