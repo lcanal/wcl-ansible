@@ -1,0 +1,10 @@
+---
+- name: Create deployer User
+  user: name=deployer groups=docker shell="/bin/bash"
+
+- name          : Deploy Public Keys for user deployer
+  authorized_key:
+    user=deployer
+    key="{{ item }}"
+  with_file:
+    - keyfile.pub

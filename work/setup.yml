@@ -1,0 +1,7 @@
+##----##
+- name: Setup Host with DockerD
+  hosts: ec2hosts
+  #hosts: all
+  remote_user: root
+  roles:
+    - docker-host

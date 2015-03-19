@@ -28,3 +28,7 @@
     name=owncloud
     ports=80:80
     volumes=/var/owncloudData:/var/www/owncloud/data
+
+- name: Sudo
+  sudo: yes
+  command: touch /root/help1
