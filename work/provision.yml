@@ -13,13 +13,13 @@
         keypair: KeyPair1
         instance_type: t2.micro
         region: us-east-1
-        image:  #ami-323b195a  #ami-c2a818aa #Centos6 HVM
+        image:  ami-c2a818aa #Centos6 HVM
         wait: true
         exact_count: 1
         count_tag:
-            Name: CoreOS-Ansible
+            Name: CentOS6
         instance_tags:
-            Name: CoreOS-Ansible
+            Name: CentOS6
         volumes:
             - device_name: /dev/sda1
               volume_size: 8

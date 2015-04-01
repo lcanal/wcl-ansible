@@ -1,16 +1,22 @@
 ---
-##- name: Enable EPEL Repo
-##  yum : pkg=epel-release state=latest
+- name: Enable EPEL Repo
+  yum : pkg=epel-release state=latest
 
-##- name: Install SELinux python bindings
-##  yum: pkg=libselinux-python state=latest
+- name: Install SELinux python bindings
+  yum : pkg=libselinux-python state=latest
 
 # Not neccesary to install docker when installed via docker-py
-##- name: Install Docker Python Module
-##  yum : name=python-docker-py state=latest
+- name: Install Docker Python Module
+  yum : name=python-docker-py state=latest
 
-##- name   : Start Docker Service
-##  service: name=docker state=started
+- name: Install Httplib2 needed for container heartbeat
+  yum : name=python-httplib2 state=latest
+
+- name: Install passlib needed for container heartbeat 
+  yum : name=python-passlib state=latest
+
+- name   : Start Docker Service
+  service: name=docker state=started
 
 - include: create-users.yml
 - include: create-directories.yml
