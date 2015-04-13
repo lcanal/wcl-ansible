@@ -13,16 +13,16 @@
         keypair: KeyPair1
         instance_type: t2.micro
         region: us-east-1
-        image:  ami-c2a818aa #Centos6 HVM
+        image:  ami-aed06ac6 #ami-c2a818aa #Centos6 HVM
         wait: true
         exact_count: 1
         count_tag:
-            Name: CentOS6
+            Name: RHEL6
         instance_tags:
-            Name: CentOS6
+            Name: RHEL6
         volumes:
             - device_name: /dev/sda1
-              volume_size: 8
+              volume_size: 10
               delete_on_termination: true
       register: ec2
 
