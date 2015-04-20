@@ -13,13 +13,13 @@
         keypair: KeyPair1
         instance_type: t2.micro
         region: us-east-1
-        image:  ami-aed06ac6 #ami-c2a818aa #Centos6 HVM
+        image:  ami-c2a818aa #Centos6 HVM
         wait: true
         exact_count: 1
         count_tag:
-            Name: RHEL6
+            Name: Docker-Host
         instance_tags:
-            Name: RHEL6
+            Name: Docker-Host
         volumes:
             - device_name: /dev/sda1
               volume_size: 10
