@@ -1,13 +1,21 @@
 ---
 - name: Enable EPEL Repo
-  yum : pkg=epel-release state=latest
+  yum : name=epel-release state=latest
+
+- name: Install PIP
+  yum : name=python-pip state=latest
 
 - name: Install SELinux python bindings
-  yum : pkg=libselinux-python state=latest
+  yum : name=libselinux-python state=latest
 
-# Not neccesary to install docker when installed via docker-py
+- name: Install SELinux python bindings
+  yum : name=docker-io state=latest
+
+- name: Install URLLIB
+  pip : name=urllib3 state=latest
+
 - name: Install Docker Python Module
-  yum : name=python-docker-py state=latest
+  pip : name=docker-py state=latest
 
 - name   : Start Docker Service
   service: name=docker state=started
