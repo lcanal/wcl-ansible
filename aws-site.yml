@@ -6,6 +6,6 @@
   tags:
     - provision
 
-- include: docker-hosts.yml 
+- include: docker-host.yml 
   tags:
     - deploy

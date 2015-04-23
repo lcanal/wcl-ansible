@@ -12,11 +12,15 @@
         region: us-east-1
         image: ami-c2a818aa #Centos 6 ; #ami-96a818fe #CentOS7; #ami-a8d369c0 RHEL7. ami-146e2a7c is AmazonLinuxAMI
         wait: true
-        exact_count: 2
+        exact_count: 1
         count_tag:
             Name: WCL Docker Host
         instance_tags:
             Name: WCL Docker Host
+        volumes:
+            - device_name: /dev/sda1
+              volume_size: 10
+              delete_on_termination: true
       register: ec2
 
     - name: Add all instance public IPs to host group

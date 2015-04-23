@@ -1,0 +1,6 @@
+---
+#Deploy a Docker Registry on AWS
+- include: aws-provision.yml
+- include: docker-host.yml
+- include: docker-registry.yml
+
