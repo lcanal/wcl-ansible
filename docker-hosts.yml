@@ -1,7 +1,0 @@
----
-- name: Docker Host Setup
-  hosts: ec2
-  remote_user: root
-  roles:
-    - docker-host
-    - docker-owncloud

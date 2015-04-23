@@ -1,12 +1,13 @@
 ---
 - name: Deploy Docker Container
   docker:
-    image: registry
+    image: "registry:2.0"
     name : registry
     publish_all_ports: True
     restart_policy: always
-    state: started
-    ports: "127.0.0.1:5000:5000"
+    state: restarted
+    #ports: "127.0.0.1:5000:5000"
+    ports: "5000:5000"
     volumes:
         - "/tmp:/tmp"
     env:
@@ -17,17 +18,17 @@
     - docker
 
 - name: Check if port 5000 is allowed
-  shell: iptables -L | grep -q "Allow http"
-  register: check_allow_http
+  shell: iptables -L | grep -q "Allow docker registry"
+  register: check_allow_dregistry
   ignore_errors: yes
   changed_when: no
   always_run: yes
 
 - name: Open port 5000
   command: >
-    iptables -A INPUT -p tcp -m tcp --dport 5000
+    iptables -I INPUT -p tcp -m tcp --dport 5000
     -m comment --comment "Allow docker registry" -j ACCEPT
-  when: check_allow_http.rc != 0
+  when: check_allow_dregistry.rc != 0
   notify:
     - Save iptables
 

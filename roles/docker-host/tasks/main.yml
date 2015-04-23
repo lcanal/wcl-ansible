@@ -8,7 +8,10 @@
 - name: Install SELinux python bindings
   yum : name=libselinux-python state=latest
 
-- name: Install SELinux python bindings
+- name: Install Docker Python Module
+  pip : name=docker-py state=latest
+
+- name: Install Docker
   yum : name=docker-io state=latest
 
 - name: Install URLLIB

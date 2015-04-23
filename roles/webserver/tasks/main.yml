@@ -2,6 +2,9 @@
 - name: Ensure Apache is installed
   yum : name=httpd state=latest
 
+- name: Start Apache
+  service: name=httpd state=started
+
 - name: Check if port 80 is allowed
   shell: iptables -L | grep -q "Allow http"
   register: check_allow_http
@@ -11,8 +14,9 @@
 
 - name: Open port 80
   command: >
-    iptables -A INPUT -p tcp -m tcp --dport 80
+    iptables -I INPUT -p tcp -m tcp --dport 80
     -m comment --comment "Allow http" -j ACCEPT
   when: check_allow_http.rc != 0
   notify:
     - Save iptables
+
