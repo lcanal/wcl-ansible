@@ -1,0 +1,14 @@
+---
+- name: Ensure ESXi containers are available
+  hosts: localhost
+  vars_files:
+    - private/esxi-creds.yml
+  roles:
+    - esxiguest
+ 
+##Directory server; Backed by FreeIPA
+- name: Ensure Directory Server is up and configured
+  hosts: dirservers
+  user: root
+  roles:
+    - dirserver

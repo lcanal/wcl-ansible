@@ -1,0 +1,5 @@
+[dirservers]
+april
+
+[appservers]
+slash	ansible_ssh_host=10.0.0.208
