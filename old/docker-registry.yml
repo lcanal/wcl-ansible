@@ -1,7 +1,0 @@
----
-- name: Deploy Docker Registry (As a container)
-  hosts: ec2
-  remote_user: root
-  roles:
-    - webserver
-    - docker-registry

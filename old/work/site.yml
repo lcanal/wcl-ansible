@@ -1,4 +1,0 @@
----
-## Test playbook for work dockerd setup
-- include: provision.yml
-- include: setup.yml
