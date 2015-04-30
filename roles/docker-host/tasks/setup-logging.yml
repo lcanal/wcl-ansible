@@ -1,2 +1,20 @@
 ---
 - name: Install logstash
+  yum : name=https://download.elastic.co/logstash/logstash/packages/centos/logstash-1.4.2-1_2c0f5a1.noarch.rpm state=present
+  
+- name: Check config files
+  template:
+    src: logstash.conf.j2
+    dest: /etc/logstash/logstash.conf
+    owner: root
+    group: root
+    mode: 0644
+    
+- name: Check pattern file
+  file:
+    src: patterns
+    dest: /etc/logstash/patterns
+    owner: root
+    group: root
+    mode: 0644
+    
