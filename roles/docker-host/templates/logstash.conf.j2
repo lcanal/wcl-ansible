@@ -1,0 +1,148 @@
+input {
+
+#
+# KFS Production KFS log files
+#
+        file {
+                path => "/opt/logs/tomcat/kfsprd/catalina.out"
+                start_position => beginning
+                type => "tomcat"
+                tags => [ "kfsprd_tomcat" , "kfsprd" ]
+        }
+        file {
+                path => "/opt/logs/kfs/prd/kfs.log"
+                start_position => beginning
+                type => "kfs"
+                tags => [ "kfsprd_kfs" , "kfsprd" ]
+        }
+
+#
+# KFS Stage KFS log files
+#
+        file {
+                path => "/opt/logs/tomcat/kfsstg/catalina.out"
+                start_position => beginning
+                type => "tomcat"
+                tags => [ "kfsstg_tomcat" , "kfsstg" ]
+        }
+        file {
+                path => "/opt/logs/kfs/stg/kfs.log"
+                start_position => beginning
+                type => "kfs"
+                tags => [ "kfsstg_kfs" , "kfsstg" ]
+        }
+
+#
+# Apache log files
+#
+        file {
+                path => "/opt/logs/apache/access.log"
+                start_position => beginning
+                type => "apache_access"
+                tags => [ "kfs_apache_access" ]
+
+        }
+        file {
+                path => "/opt/logs/apache/error.log"
+                start_position => beginning
+                type => "apache_error"
+                tags => [ "kfs_apache_error" ]
+        }
+}
+
+filter {
+        mutate {
+                add_field => [ "shorthost", "%{host}" ]
+        }
+        mutate {
+                split => ["shorthost", "."]
+        }
+       mutate {
+               replace => [ "host", "%{[shorthost][0]}" ]
+       }
+       mutate {
+               remove_field => [ "shorthost" ]
+       }
+
+       if [type] == "tomcat" {
+               multiline {
+                       patterns_dir => "/etc/logstash/conf.d/patterns"
+                       pattern => "^%{CATALINA_DATESTAMP}"
+                       negate => true
+                       what => "previous"
+               }
+               grok {
+                       patterns_dir => "/etc/logstash/conf.d/patterns"
+                       match => [ "message", "%{KFS_CATALINA}" ]
+               }
+               date {
+                       match => [ "timestamp", "MMM dd, yyyy HH:mm:ss a" ]
+                       timezone => "America/Los_Angeles"
+               }
+               if [class] == "org.apache.catalina.tribes.group.interceptors.TcpFailureDetector" {
+                       drop {}
+               }
+               if [class] == "org.apache.catalina.ha.session.DeltaManager" {
+                       drop {}
+               }
+               if [class] == "org.apache.catalina.ha.tcp.SimpleTcpCluster" {
+                       drop {}
+               }
+       }
+
+       if [type] == "kfs" {
+               multiline {
+                       patterns_dir => "/etc/logstash/conf.d/patterns"
+                       pattern => "^%{KFS_KFSLOG_DATESTAMP}"
+                       negate => true
+                       what => "previous"
+               }
+               grok {
+                       patterns_dir => "/etc/logstash/conf.d/patterns"
+                       match => [ "message", "%{KFS_KFSLOG}" ]
+               }
+               date {
+                       match => [ "timestamp", "yyyy-MM-dd HH:mm:ss" ]
+                       timezone => "America/Los_Angeles"
+               }
+       }
+
+       if [type] == "apache_access" {
+               grok {
+                       patterns_dir => "/etc/logstash/conf.d/patterns"
+                       match => { "message" => "%{COMBINEDAPACHELOG}" }
+               }
+               date {
+                       match => [ "timestamp", "dd/MMM/yyyy:HH:mm:ss Z" ]
+               }
+        }
+
+        if [type] == "apache_error" {
+                grok {
+                        patterns_dir => "/etc/logstash/conf.d/patterns"
+                        match => { "message" => "%{APACHE_ERRORLOG}" }
+                }
+                date {
+                        match => [ "timestamp", "EEE MMM dd HH:mm:ss YYYY" ]
+                }
+        }
+
+        if "_grokparsefailure" in [tags] {
+                drop { }
+        }
+
+        if "multiline" in [tags] {
+                mutate {
+                        remove_tag => [ "multiline" ]
+                }
+        }
+}
+
+output {
+        elasticsearch {
+                host => "192.168.152.55"
+                protocol => "transport"
+        }
+#       stdout { codec => rubydebug }
+}
+

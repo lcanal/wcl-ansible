@@ -5,15 +5,15 @@
 - name: Check config files
   template:
     src: logstash.conf.j2
-    dest: /etc/logstash/logstash.conf
+    dest: /etc/logstash/conf.d/logstash.conf
     owner: root
     group: root
     mode: 0644
     
 - name: Check pattern file
-  file:
+  copy:
     src: patterns
-    dest: /etc/logstash/patterns
+    dest: /etc/logstash/conf.d/patterns
     owner: root
     group: root
     mode: 0644
